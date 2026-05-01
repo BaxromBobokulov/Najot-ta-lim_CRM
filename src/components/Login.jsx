@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios"
 
 export default function Login() {
     const [showPassword, setShowPassword] = useState(false);
@@ -7,10 +8,27 @@ export default function Login() {
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
+    const API = "http://localhost:3000/auth/login";
+
+    const loginPost = async (e) => {
         e.preventDefault();
-        console.log("Login:", login, "Password:", password);
+        
+        try {
+            const res = await axios.post(API, {
+                email: login,
+                password: password,
+            });
+
+            console.log(res.data);
+
+            navigate("/dashboard");
+
+        } catch (error) {
+            console.log(error);
+        }
     };
+
+
 
     return (
         <div className="flex min-h-screen w-full">
@@ -53,19 +71,19 @@ export default function Login() {
                     </h1>
 
                     {/* Form */}
-                    <form onSubmit={handleSubmit} className="flex flex-col w-full max-w-xs space-y-5 gap-5">
+                    <form onSubmit={loginPost} className="flex flex-col w-full max-w-xs space-y-5 gap-5">
 
                         <div className="flex flex-col gap-[10px]">
                             <label
-                                htmlFor="login-input"
+                                htmlFor="email-input"
                                 className="block text-sm font-medium text-gray-700"
                             >
-                                Login
+                                Email
                             </label>
                             <input
-                                id="login-input"
+                                id="email-input"
                                 type="text"
-                                placeholder="Loginni kiriting"
+                                placeholder="Emailni kiriting"
                                 value={login}
                                 onChange={(e) => setLogin(e.target.value)}
                                 className="w-full h-10 px-4 text-sm border border-gray-300 rounded focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition"
@@ -112,7 +130,6 @@ export default function Login() {
                             type="submit"
                             className="w-full h-[40px] cursor-pointer py-2 text-sm font-semibold text-white rounded transition-all duration-200 hover:opacity-90 active:scale-95"
                             style={{ backgroundColor: "#1a56db" }}
-                            onClick={() => navigate("/dashboard")}
                         >
                             Kirish
                         </button>
@@ -121,7 +138,7 @@ export default function Login() {
 
                 {/* Footer */}
                 <footer className="text-center text-[10px] text-gray-400 py-4 border-t border-gray-100">
-                    Copyright © 2021 of Tashkent University of Information Technologies
+                    Copyright © 2026 of Najot ta'lim
                 </footer>
             </div>
         </div>

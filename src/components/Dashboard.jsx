@@ -17,7 +17,7 @@ import {
     Accordion,
     AccordionSummary,
     AccordionDetails,
-    Button,
+    Collapse,
 } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 import PeopleIcon from "@mui/icons-material/People";
@@ -25,22 +25,43 @@ import SchoolIcon from "@mui/icons-material/School";
 import PersonIcon from "@mui/icons-material/Person";
 import CardGiftcardIcon from "@mui/icons-material/CardGiftcard";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
+import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
-import RefreshIcon from "@mui/icons-material/Refresh";
+import MeetingRoomIcon from "@mui/icons-material/MeetingRoom";
+import BadgeIcon from "@mui/icons-material/Badge";
+import ReportProblemIcon from "@mui/icons-material/ReportProblem";
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
+import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
+import SendIcon from "@mui/icons-material/Send";
+import HelpIcon from "@mui/icons-material/Help";
+import FactCheckIcon from "@mui/icons-material/FactCheck";
+import Xonalar from "../pages/Xonalar";
+import Kurslar from "../pages/Kurslar";
 
 const DRAWER_WIDTH = 230;
 
 const navItems = [
     { label: "Asosiy",        icon: <HomeIcon fontSize="small" /> },
     { label: "O'qituvchilar", icon: <PeopleIcon fontSize="small" /> },
-    { label: "Sinflar",       icon: <SchoolIcon fontSize="small" /> },
+    { label: "Guruhlar",      icon: <SchoolIcon fontSize="small" /> },
     { label: "Talabalar",     icon: <PersonIcon fontSize="small" /> },
     { label: "Sovg'alar",     icon: <CardGiftcardIcon fontSize="small" /> },
-    { label: "Boshqarish",    icon: <ManageAccountsIcon fontSize="small" /> },
+    { label: "Moliya",        icon: <MonetizationOnIcon fontSize="small" /> },
+];
+
+const boshqaruvItems = [
+    { label: "Kurslar",        icon: <MenuBookIcon fontSize="small" /> },
+    { label: "Xonalar",        icon: <MeetingRoomIcon fontSize="small" /> },
+    { label: "Hodimlar",       icon: <BadgeIcon fontSize="small" /> },
+    { label: "Rollar",         icon: <AdminPanelSettingsIcon fontSize="small" /> },
+    { label: "Xabar Yuborish", icon: <SendIcon fontSize="small" /> },
+    { label: "FAQ",            icon: <HelpIcon fontSize="small" /> },
+    { label: "Tekshiruv",      icon: <FactCheckIcon fontSize="small" /> },
 ];
 
 const stats = [
@@ -52,9 +73,11 @@ const stats = [
 ];
 
 export default function Dashboard() {
-    const [activeNav, setActiveNav]   = useState(0);
-    const [language,  setLanguage]    = useState("O'zbekcha");
-    const [darkMode,  setDarkMode]    = useState(false);
+    const [activeNav,       setActiveNav]       = useState(0);
+    const [language,        setLanguage]        = useState("O'zbekcha");
+    const [darkMode,        setDarkMode]        = useState(false);
+    const [boshqaruvOpen,   setBoshqaruvOpen]   = useState(false);
+    const [activeSub,       setActiveSub]       = useState(null);
 
     return (
         <Box sx={{ display: "flex", minHeight: "100vh", bgcolor: "#f1f5f9" }}>
@@ -62,6 +85,7 @@ export default function Dashboard() {
             {/* ───────────── SIDEBAR ───────────── */}
             <Drawer
                 variant="permanent"
+                anchor="left"
                 sx={{
                     width: DRAWER_WIDTH,
                     flexShrink: 0,
@@ -72,6 +96,7 @@ export default function Dashboard() {
                         borderRight: "1px solid #e2e8f0",
                         display: "flex",
                         flexDirection: "column",
+                        overflowX: "hidden",
                     },
                 }}
             >
@@ -88,10 +113,10 @@ export default function Dashboard() {
                             justifyContent: "center",
                         }}
                     >
-                        <Typography sx={{ color: "white", fontWeight: 800, fontSize: 18 }}>E</Typography>
+                        <Typography sx={{ color: "white", fontWeight: 800, fontSize: 18 }}>N</Typography>
                     </Box>
                     <Typography sx={{ fontWeight: 700, fontSize: 17, color: "#1e293b" }}>
-                        EduCoin
+                        Najot ta'lim
                     </Typography>
                 </Box>
 
@@ -100,7 +125,7 @@ export default function Dashboard() {
                     {navItems.map((item, idx) => (
                         <ListItem key={item.label} disablePadding sx={{ mb: 0.5 }}>
                             <ListItemButton
-                                onClick={() => setActiveNav(idx)}
+                                onClick={() => { setActiveNav(idx); setBoshqaruvOpen(false); setActiveSub(null); }}
                                 sx={{
                                     borderRadius: "10px",
                                     bgcolor: activeNav === idx ? "#7c3aed" : "transparent",
@@ -130,61 +155,109 @@ export default function Dashboard() {
                             </ListItemButton>
                         </ListItem>
                     ))}
-                </List>
 
-                {/* Subscription Card */}
-                <Box sx={{ p: 2 }}>
-                    <Card
-                        sx={{
-                            bgcolor: "#fffbeb",
-                            borderRadius: 2,
-                            boxShadow: "none",
-                            border: "1px solid #fde68a",
-                        }}
-                    >
-                        <CardContent sx={{ p: 1.5, "&:last-child": { pb: 1.5 } }}>
-                            <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 0.5 }}>
-                                <Avatar
-                                    sx={{
-                                        width: 30,
-                                        height: 30,
-                                        bgcolor: "#f59e0b",
-                                        fontSize: 13,
-                                        fontWeight: 700,
-                                    }}
-                                >
-                                    O
-                                </Avatar>
-                                <Box>
-                                    <Typography sx={{ fontSize: 12, fontWeight: 600, color: "#92400e" }}>
-                                        Obuna
-                                    </Typography>
-                                    <Typography sx={{ fontSize: 11, color: "#b45309" }}>
-                                        Obunangiz tugagan
-                                    </Typography>
-                                </Box>
-                            </Box>
-                            <Button
-                                fullWidth
-                                size="small"
-                                startIcon={<RefreshIcon sx={{ fontSize: 14 }} />}
+                    {/* ── Boshqaruv ── */}
+                    <ListItem disablePadding sx={{ mb: 0.5 }}>
+                        <ListItemButton
+                            onClick={() => {
+                                setBoshqaruvOpen((prev) => !prev);
+                                setActiveNav(-1);
+                            }}
+                            sx={{
+                                borderRadius: "10px",
+                                bgcolor: boshqaruvOpen ? "#7c3aed" : "transparent",
+                                color: boshqaruvOpen ? "white" : "#64748b",
+                                "&:hover": {
+                                    bgcolor: boshqaruvOpen ? "#6d28d9" : "#f1f5f9",
+                                },
+                                py: 1,
+                                px: 1.5,
+                            }}
+                        >
+                            <ListItemIcon sx={{ color: boshqaruvOpen ? "white" : "#64748b", minWidth: 34 }}>
+                                <ManageAccountsIcon fontSize="small" />
+                            </ListItemIcon>
+                            <ListItemText
+                                primary="Boshqaruv"
+                                primaryTypographyProps={{ fontSize: 13, fontWeight: boshqaruvOpen ? 600 : 400 }}
+                            />
+                            {boshqaruvOpen
+                                ? <ExpandLessIcon fontSize="small" sx={{ color: "white" }} />
+                                : <ExpandMoreIcon fontSize="small" sx={{ color: "#94a3b8" }} />
+                            }
+                        </ListItemButton>
+                    </ListItem>
+                </List>
+            </Drawer>
+
+            {/* ───────────── BOSHQARUV SECOND PANEL (slides in from left) ───────────── */}
+            <Box
+                sx={{
+                    width: boshqaruvOpen ? 200 : 0,
+                    minWidth: boshqaruvOpen ? 200 : 0,
+                    overflow: "hidden",
+                    transition: "width 0.28s cubic-bezier(0.4,0,0.2,1), min-width 0.28s cubic-bezier(0.4,0,0.2,1)",
+                    flexShrink: 0,
+                    bgcolor: "#fafaff",
+                    borderRight: boshqaruvOpen ? "1px solid #e2e8f0" : "none",
+                    display: "flex",
+                    flexDirection: "column",
+                    pt: 2,
+                    position: "sticky",
+                    top: 0,
+                    height: "100vh",
+                    alignSelf: "flex-start",
+                }}
+            >
+                <Typography
+                    sx={{
+                        fontSize: 11,
+                        fontWeight: 700,
+                        color: "#94a3b8",
+                        textTransform: "uppercase",
+                        letterSpacing: 1,
+                        px: 2,
+                        mb: 1,
+                        whiteSpace: "nowrap",
+                    }}
+                >
+                    Boshqaruv
+                </Typography>
+                <List sx={{ px: 1 }}>
+                    {boshqaruvItems.map((sub) => (
+                        <ListItem key={sub.label} disablePadding sx={{ mb: 0.3 }}>
+                            <ListItemButton
+                                onClick={() => setActiveSub(sub.label)}
                                 sx={{
-                                    mt: 1,
-                                    bgcolor: "#ef4444",
-                                    color: "white",
-                                    fontSize: 11,
-                                    textTransform: "none",
-                                    borderRadius: 1.5,
-                                    fontWeight: 600,
-                                    "&:hover": { bgcolor: "#dc2626" },
+                                    borderRadius: "8px",
+                                    bgcolor: activeSub === sub.label ? "#ede9fe" : "transparent",
+                                    color: activeSub === sub.label ? "#7c3aed" : "#64748b",
+                                    "&:hover": { bgcolor: "#f0ebff" },
+                                    py: 0.8,
+                                    px: 1.2,
+                                    whiteSpace: "nowrap",
                                 }}
                             >
-                                Obunani yangilash
-                            </Button>
-                        </CardContent>
-                    </Card>
-                </Box>
-            </Drawer>
+                                <ListItemIcon
+                                    sx={{
+                                        color: activeSub === sub.label ? "#7c3aed" : "#94a3b8",
+                                        minWidth: 30,
+                                    }}
+                                >
+                                    {sub.icon}
+                                </ListItemIcon>
+                                <ListItemText
+                                    primary={sub.label}
+                                    primaryTypographyProps={{
+                                        fontSize: 12.5,
+                                        fontWeight: activeSub === sub.label ? 600 : 400,
+                                    }}
+                                />
+                            </ListItemButton>
+                        </ListItem>
+                    ))}
+                </List>
+            </Box>
 
             {/* ───────────── MAIN AREA ───────────── */}
             <Box sx={{ flex: 1, display: "flex", flexDirection: "column" }}>
@@ -233,63 +306,69 @@ export default function Dashboard() {
 
                 {/* Page Content */}
                 <Box sx={{ p: 3 }}>
+                    {activeSub === "Kurslar" ? (
+                        <Kurslar />
+                    ) : activeSub === "Xonalar" ? (
+                        <Xonalar />
+                    ) : (
+                        <>
+                            {/* Greeting */}
+                            <Typography variant="h5" sx={{ fontWeight: 700, color: "#1e293b", mb: 0.4 }}>
+                                Salom, dasturchi!
+                            </Typography>
+                            <Typography sx={{ fontSize: 13, color: "#64748b", mb: 3 }}>
+                                Najot ta'lim platformasiga xush kelibsiz!
+                            </Typography>
 
-                    {/* Greeting */}
-                    <Typography variant="h5" sx={{ fontWeight: 700, color: "#1e293b", mb: 0.4 }}>
-                        Salom, creator!
-                    </Typography>
-                    <Typography sx={{ fontSize: 13, color: "#64748b", mb: 3 }}>
-                        EduCoin platfomasiga xush kelibsiz!
-                    </Typography>
+                            {/* Stats Cards */}
+                            <Box sx={{ display: "flex", gap: 2, mb: 3, flexWrap: "wrap" }}>
+                                {stats.map((stat) => (
+                                    <Card
+                                        key={stat.label}
+                                        sx={{
+                                            flex: "1 1 140px",
+                                            borderRadius: 3,
+                                            boxShadow: "none",
+                                            border: "1px solid #e2e8f0",
+                                            bgcolor: "white",
+                                        }}
+                                    >
+                                        <CardContent sx={{ textAlign: "center", py: 3 }}>
+                                            <Box sx={{ mb: 1 }}>{stat.icon}</Box>
+                                            <Typography sx={{ fontSize: 12, color: "#64748b", mb: 0.5 }}>
+                                                {stat.label}
+                                            </Typography>
+                                            <Typography sx={{ fontSize: 26, fontWeight: 700, color: "#1e293b" }}>
+                                                {stat.value}
+                                            </Typography>
+                                        </CardContent>
+                                    </Card>
+                                ))}
+                            </Box>
 
-                    {/* Stats Cards */}
-                    <Box sx={{ display: "flex", gap: 2, mb: 3, flexWrap: "wrap" }}>
-                        {stats.map((stat) => (
-                            <Card
-                                key={stat.label}
+                            {/* Dars Jadvali Accordion */}
+                            <Accordion
                                 sx={{
-                                    flex: "1 1 140px",
-                                    borderRadius: 3,
+                                    borderRadius: "12px !important",
                                     boxShadow: "none",
                                     border: "1px solid #e2e8f0",
                                     bgcolor: "white",
+                                    "&:before": { display: "none" },
                                 }}
                             >
-                                <CardContent sx={{ textAlign: "center", py: 3 }}>
-                                    <Box sx={{ mb: 1 }}>{stat.icon}</Box>
-                                    <Typography sx={{ fontSize: 12, color: "#64748b", mb: 0.5 }}>
-                                        {stat.label}
+                                <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={{ px: 2.5 }}>
+                                    <Typography sx={{ fontWeight: 600, fontSize: 14, color: "#1e293b" }}>
+                                        Dars Jadvali
                                     </Typography>
-                                    <Typography sx={{ fontSize: 26, fontWeight: 700, color: "#1e293b" }}>
-                                        {stat.value}
+                                </AccordionSummary>
+                                <AccordionDetails sx={{ px: 2.5 }}>
+                                    <Typography sx={{ fontSize: 13, color: "#64748b" }}>
+                                        Hozircha dars jadvali mavjud emas.
                                     </Typography>
-                                </CardContent>
-                            </Card>
-                        ))}
-                    </Box>
-
-                    {/* Dars Jadvali Accordion */}
-                    <Accordion
-                        sx={{
-                            borderRadius: "12px !important",
-                            boxShadow: "none",
-                            border: "1px solid #e2e8f0",
-                            bgcolor: "white",
-                            "&:before": { display: "none" },
-                        }}
-                    >
-                        <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={{ px: 2.5 }}>
-                            <Typography sx={{ fontWeight: 600, fontSize: 14, color: "#1e293b" }}>
-                                Dars Jadvali
-                            </Typography>
-                        </AccordionSummary>
-                        <AccordionDetails sx={{ px: 2.5 }}>
-                            <Typography sx={{ fontSize: 13, color: "#64748b" }}>
-                                Hozircha dars jadvali mavjud emas.
-                            </Typography>
-                        </AccordionDetails>
-                    </Accordion>
-
+                                </AccordionDetails>
+                            </Accordion>
+                        </>
+                    )}
                 </Box>
             </Box>
         </Box>
