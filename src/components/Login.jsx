@@ -10,23 +10,29 @@ export default function Login() {
 
     const API = "http://localhost:3000/auth/login";
 
+    // const loginPost = async (e) => {
+    //     e.preventDefault();
+        
+    //     try {
+    //         const res = await axios.post(API, {
+    //             email: login,
+    //             password: password,
+    //         });
+
+    //         console.log(res.data);
+
+    //         navigate("/dashboard");
+
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // };
+
+
     const loginPost = async (e) => {
         e.preventDefault();
-        
-        try {
-            const res = await axios.post(API, {
-                email: login,
-                password: password,
-            });
-
-            console.log(res.data);
-
-            navigate("/dashboard");
-
-        } catch (error) {
-            console.log(error);
-        }
-    };
+        navigate("/dashboard");
+    }
 
 
 
